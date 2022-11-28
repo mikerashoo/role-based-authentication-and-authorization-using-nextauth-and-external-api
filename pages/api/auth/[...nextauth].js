@@ -29,9 +29,7 @@ export default NextAuth({
           });
   
           const user = await res.json()
-          if (!res.ok) {
-            throw new Error(user.exception);
-          }
+           
           // If no error and we have user data, return it
           if (res.ok && user) {
             return user;

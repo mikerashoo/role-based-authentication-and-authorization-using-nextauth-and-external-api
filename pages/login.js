@@ -36,7 +36,7 @@ export default function Signin({ providers, loginError }) {
     await signIn("credentials", {
       redirect: true,
       email: "mk@gmail.com",
-      password: "123456789"
+      password: "1234567890"
     });
  
   }
