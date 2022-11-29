@@ -8,6 +8,8 @@ export default function Signin({ providers, loginError }) {
     const router = useRouter();
 
   const [errorMessage, setErrorMessage] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null); 
     
     useEffect( () =>{
         if(loginError) {
@@ -34,31 +36,34 @@ export default function Signin({ providers, loginError }) {
   const handleLoginUser = async (e) => {    
     e.preventDefault();
     
-
+    if(email == null || email.length == 0 || password == null || password.length == 0) {
+        setErrorMessage("Please fill all required fields");
+        return;
+    }
     try {
-        const resp = await signIn("credentials", {
-      redirect: false,
-      email: "mk@gmail.com",
-      password: "123456789"
-    });
-    if(resp.ok){
-        //login success
-        router.push('/account_page')
-    }
-    else {
-          if(resp.error == 'CredentialsSignin'){
-            setErrorMessage("Incorrect email or password")
-        }
-        else {
-            setErrorMessage("something went wrong. Please try again")
-        }
-    }
-    console.log("Response Res: ", resp);
+        const resp = await signIn("credentials", 
+            {
+                redirect: false,
+                email: email,
+                password: password 
+            });
+            if(resp.ok){
+                //login success
+                router.push('/profile')
+            }
+            else {
+                if(resp.error == 'CredentialsSignin'){
+                    setErrorMessage("Incorrect email or password")
+                }
+                else {
+                    setErrorMessage("something went wrong. Please try again")
+                }
+            } 
   
-    } catch (error) {
-        setErrorMessage("something went wrong. Please try again")
+        } catch (error) {
+            setErrorMessage("something went wrong. Please try again")
 
-    }
+        }
 
  
   }
@@ -83,7 +88,22 @@ export default function Signin({ providers, loginError }) {
           Login Page
         </h1>
 
-           <button onClick={handleLoginUser}>Login </button>
+      
+        <form onSubmit={handleLoginUser}>
+            <div style={{marginBottom: 10, marginTop: 10}}>
+                <label htmlFor="email">Email</label>
+                <input value={email} onChange={(e) => setEmail(e.target.value)}
+                type="email" id="email" name="email" required />
+            </div>
+            <div style={{marginBottom: 10}}>
+            
+                 <label htmlFor="password">Password</label>
+                 <input type="password"  value={password} onChange={(e) => setPassword(e.target.value)} id="password" name="password" required />
+
+            </div>
+      <button type="submit">Login</button>
+    </form>
+
       </main>
 
        

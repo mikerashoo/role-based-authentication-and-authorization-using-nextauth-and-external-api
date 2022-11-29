@@ -18,8 +18,9 @@ export default NextAuth({
           try {
              
 
-          
-        const res = await fetch('http://localhost:8000/api/login', {
+            const LOGIN_END_POINT = process.env.NEXT_PUBLIC_API_ROOT + 'login'
+        
+            const res = await fetch(LOGIN_END_POINT, {
             method: 'POST',
             body: JSON.stringify(payload),
             headers: {
@@ -28,7 +29,7 @@ export default NextAuth({
             },
           });
   
-          const user = await res.json()
+          const user = await res.json() 
            
           // If no error and we have user data, return it
           if (res.ok && user) {
@@ -39,6 +40,8 @@ export default NextAuth({
           return null;
         
         } catch (error) {
+          console.log("ERROR", error);
+
             throw new Error(error);
             
           }

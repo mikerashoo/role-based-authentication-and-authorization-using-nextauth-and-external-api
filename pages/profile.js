@@ -23,7 +23,7 @@ export default function AccountPage({session}) {
     else {   
 
     //  setUserEmail(session.user.user.email)
-    //  setUserName(session.user.data.name)
+     setUserName(session.user.user.name)
     //  setTokenExpiration(session.expires)
       console.log(session)
     }                
@@ -41,7 +41,7 @@ export default function AccountPage({session}) {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">YOU ARE LOGGED IN {userEmail}</a>
+          Welcome <a href="https://nextjs.org">YOU ARE LOGGED IN AS {userName}</a>
         </h1>
         <button onClick={handleSignOut}>Sign Out</button>
       </main>
