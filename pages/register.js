@@ -3,11 +3,13 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css' 
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { signIn, getSession, getProviders } from "next-auth/react";
-export default function Signin({ providers, loginError }) { 
+import { newUser, getSession, getProviders, signIn } from "next-auth/react";
+import axios from 'axios';
+export default function Register({ providers, loginError }) { 
     const router = useRouter();
 
   const [errorMessage, setErrorMessage] = useState(null);
+  const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null); 
     
@@ -33,34 +35,53 @@ export default function Signin({ providers, loginError }) {
  
 
   
-  const handleLoginUser = async (e) => {    
+  const handleUserRegister = async (e) => {  
+    console.log("Register called");  
     e.preventDefault();
     
-    if(email == null || email.length == 0 || password == null || password.length == 0) {
+    if(email == null || email.length == 0 || name == null || name.length == 0 || password == null || password.length == 0) {
         setErrorMessage("Please fill all required fields");
         return;
     }
     try {
-        const resp = await signIn("credentials", 
-            {
-                redirect: false,
-                email: email,
-                password: password 
+        const data = {
+            name: name,
+            email: email,
+            password: password 
+        }
+        const REGISTER_END_POINT = process.env.NEXT_PUBLIC_API_ROOT + 'register'
+ 
+        
+            const res = await fetch(REGISTER_END_POINT, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+              'Content-Type': 'application/json', 
+              'Accept-Language': 'en-US',
+            },
+          });
+  
+          const user = await res.json() 
+        console.log("Register: ", user);
+
+          if (res.ok && user) {
+            signIn("credentials", {
+                email, password, callbackUrl: `${window.location.origin}/profile`, redirect: false }
+            ).then(function(result) {
+                router.push(result.url)
+            }).catch(err => {
+                setErrorMessage("Failed to register: " + err.toString())
             });
-            if(resp.ok){
-                //login success
-                router.push('/profile')
-            }
-            else {
-                if(resp.error == 'CredentialsSignin'){
-                    setErrorMessage("Incorrect email or password")
-                }
-                else {
-                    setErrorMessage("something went wrong. Please try again")
-                }
-            } 
+          }
+          else {
+            setErrorMessage("something went wrong. Please try again")
+
+          }
+        
   
         } catch (error) {
+        console.log("Register error: ", error);
+
             setErrorMessage("something went wrong. Please try again")
 
         }
@@ -85,11 +106,16 @@ export default function Signin({ providers, loginError }) {
         </div>
         }
         <h1 className={styles.title}>
-          Login Page
+          Register Page
         </h1>
 
       
-        <form onSubmit={handleLoginUser}>
+        <form onSubmit={handleUserRegister}>
+        <div style={{marginBottom: 10, marginTop: 10}}>
+                <label htmlFor="name">Name</label>
+                <input value={name} onChange={(e) => setName(e.target.value)}
+                type="text" id="name" name="name" required />
+            </div>
             <div style={{marginBottom: 10, marginTop: 10}}>
                 <label htmlFor="email">Email</label>
                 <input value={email} onChange={(e) => setEmail(e.target.value)}
@@ -101,7 +127,7 @@ export default function Signin({ providers, loginError }) {
                  <input type="password"  value={password} onChange={(e) => setPassword(e.target.value)} id="password" name="password" required />
 
             </div>
-      <button type="submit">Login</button>
+      <button type="submit">Register</button>
     </form>
 
       </main>
