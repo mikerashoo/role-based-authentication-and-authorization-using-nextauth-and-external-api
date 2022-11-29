@@ -33,11 +33,33 @@ export default function Signin({ providers, loginError }) {
   
   const handleLoginUser = async (e) => {    
     e.preventDefault();
-    await signIn("credentials", {
-      redirect: true,
+    
+
+    try {
+        const resp = await signIn("credentials", {
+      redirect: false,
       email: "mk@gmail.com",
-      password: "1234567890"
+      password: "123456789"
     });
+    if(resp.ok){
+        //login success
+        router.push('/account_page')
+    }
+    else {
+          if(resp.error == 'CredentialsSignin'){
+            setErrorMessage("Incorrect email or password")
+        }
+        else {
+            setErrorMessage("something went wrong. Please try again")
+        }
+    }
+    console.log("Response Res: ", resp);
+  
+    } catch (error) {
+        setErrorMessage("something went wrong. Please try again")
+
+    }
+
  
   }
     
