@@ -14,25 +14,18 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-         
+        
         <h1 className={styles.title}>
           Welcome to Next.js Authentication! <br/>
-          <Link href="/login">Login</Link>
         </h1> 
+        <div className="flex text-right mt-4">
+         <Link href="/login">Login</Link>
+        <Link href="/register" className="ml-4">Register</Link>
+         </div>
+
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      
     </div>
   )
 }

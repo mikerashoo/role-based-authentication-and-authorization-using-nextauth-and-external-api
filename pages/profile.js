@@ -31,7 +31,7 @@ export default function AccountPage({session}) {
  }, [])
  
  if(!Boolean(session)) {
-    return <div>Loading ...</div>
+    return <>Loading ...</>
  }
   return (
     <div className={styles.container}>
