@@ -2,9 +2,10 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css' 
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { newUser, getSession, getProviders, signIn } from "next-auth/react";
 import axios from 'axios';
+import Link from 'next/link';
 export default function Register({ providers, loginError }) { 
     const router = useRouter();
 
@@ -73,7 +74,14 @@ export default function Register({ providers, loginError }) {
                 setErrorMessage("Failed to register: " + err.toString())
             });
           }
+          else if(user.error){
+            setErrorMessage("Failed to register: " + user.error.toString())
+                
+                console.log("user error: ", user.error)
+            }
           else {
+            console.log("Error: ", user)
+
             setErrorMessage("something went wrong. Please try again")
 
           }
@@ -128,6 +136,8 @@ export default function Register({ providers, loginError }) {
 
             </div>
       <button type="submit">Register</button>
+      <p>----- Have account -----</p>
+      <Link href="/login">Login</Link>
     </form>
 
       </main>

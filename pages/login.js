@@ -4,6 +4,7 @@ import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { signIn, getSession, getProviders } from "next-auth/react";
+import Link from 'next/link';
 export default function Signin({ providers, loginError }) { 
     const router = useRouter();
 
@@ -101,7 +102,10 @@ export default function Signin({ providers, loginError }) {
                  <input type="password"  value={password} onChange={(e) => setPassword(e.target.value)} id="password" name="password" required />
 
             </div>
+            
       <button type="submit">Login</button>
+      <p>----- Don&apos;t have account -----</p>
+      <Link href="/register">Register</Link>
     </form>
 
       </main>

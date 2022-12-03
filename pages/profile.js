@@ -30,7 +30,9 @@ export default function AccountPage({session}) {
  
  }, [])
  
-    
+ if(!Boolean(session)) {
+    return <div>Loading ...</div>
+ }
   return (
     <div className={styles.container}>
       <Head>
@@ -41,7 +43,7 @@ export default function AccountPage({session}) {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome <a href="https://nextjs.org">YOU ARE LOGGED IN AS {userName}</a>
+          Welcome  {userName}
         </h1>
         <button onClick={handleSignOut}>Sign Out</button>
       </main>

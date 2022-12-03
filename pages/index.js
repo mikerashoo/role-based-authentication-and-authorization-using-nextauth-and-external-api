@@ -14,10 +14,11 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+         
         <h1 className={styles.title}>
-          Welcome to <Link href="/login">Next.js Authentication! </Link>
-        </h1>
-        <button onClick={signIn}>Login</button>
+          Welcome to Next.js Authentication! <br/>
+          <Link href="/login">Login</Link>
+        </h1> 
       </main>
 
       <footer className={styles.footer}>
