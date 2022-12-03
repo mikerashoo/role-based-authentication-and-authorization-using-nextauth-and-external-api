@@ -33,6 +33,7 @@ export default NextAuth({
            
           // If no error and we have user data, return it
           if (res.ok && user) {
+            console.log("Login User : ", user);
             return user;
           }
   
@@ -59,12 +60,15 @@ export default NextAuth({
     async signIn({ user, account, profile, email, credentials }) {
       return true
     },
-    async jwt({ token, user }) {
-        user && (token.user = user);
+    async jwt({ token, user, account }) {
+        user && (token.user = user.user);
         return token;
     },
-    async session({ session, token }) {
-        session.user = token.user;  // Setting token in session
+    async session({ session, token,  user  }) {
+        session.user = token.user;
+        console.debug("session jwt user :", token.user)
+
+        session.role = token.user.role.name; 
         return session;
       },
   },
